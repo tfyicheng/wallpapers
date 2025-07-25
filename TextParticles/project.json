@@ -1,0 +1,56 @@
+{
+  "file": "index.html",
+  "title": "TextParticles-文本粒子交互效果",
+  "description": "TextParticles.文本粒子交互效果",
+  "preview": "preview.jpg",
+  "type": "web",
+  "general": {
+    "properties": {
+      "text": {
+        "type": "string",
+        "default": "Hi !\nText Only English",
+        "description": "Display Text"
+      },
+      "amount": {
+        "type": "number",
+        "default": 1500,
+        "description": "Particle Amount",
+        "min": 100,
+        "max": 10000
+      },
+      "particleSize": {
+        "type": "number",
+        "default": 1,
+        "description": "Particle Size",
+        "min": 0.1,
+        "max": 10
+      },
+      "particleColor": {
+        "type": "color",
+        "default": "#ffffff",
+        "description": "Particle Color"
+      },
+      "textSize": {
+        "type": "number",
+        "default": 16,
+        "description": "Text Size",
+        "min": 1,
+        "max": 100
+      },
+      "area": {
+        "type": "number",
+        "default": 250,
+        "description": "Area"
+      },
+      "ease": {
+        "type": "number",
+        "default": 0.05,
+        "description": "Ease",
+        "min": 0,
+        "max": 1
+      }
+    }
+  },
+  "tags": ["interactive", "particles", "customizable"]
+}
+
