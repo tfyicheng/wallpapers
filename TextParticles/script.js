@@ -42,24 +42,18 @@ class Environment {
 	}
 
 	setup() {
-
 		this.createParticles = new CreateParticles(this.scene, this.font, this.particle, this.camera, this.renderer);
-
 		window.createParticles = this.createParticles;
-
-		// 假设 createParticles 是你创建的实例
-		if (window.wallpaperPropertyListener) {
-			window.wallpaperPropertyListener.applyUserProperties = function (properties) {
+		window.wallpaperPropertyListener = {
+			applyUserProperties: function (properties) {
 				if (window.createParticles) {
 					window.createParticles.updateDataFromWallpaper(properties);
 				}
-			};
-		}
-
+			}
+		};
 	}
 
 	render() {
-
 		this.createParticles.render()
 		this.renderer.render(this.scene, this.camera)
 	}
@@ -106,11 +100,8 @@ class CreateParticles {
 
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2(-200, 200);
-
 		this.colorChange = new THREE.Color();
-
 		this.buttom = false;
-
 		this.data = {
 			//展示文本
 			text: 'Hi !\nText Only English',
@@ -122,47 +113,75 @@ class CreateParticles {
 			ease: .05,
 		}
 
+		this.particles = null;       // 三维点对象
+		this.geometryCopy = null;    // 备份几何数据
+		this.planeArea = null;
+
 		this.setup();
 		this.bindEvents();
-
 	}
 
-
 	updateDataFromWallpaper(properties) {
+		// console.log("properties", properties);
+		let shouldReset = false;
+
 		if (properties.text) {
-			this.data.text = properties.text.value;
-			this.setup(); // ⬅️ 重新生成文本粒子（或调用你已有的更新方法）
+			this.data.text = (properties.text.value || "More than\nmeets the eye").replace(/\\n/g, '\n');
+			shouldReset = true;
 		}
 		if (properties.amount) {
 			this.data.amount = properties.amount.value;
-			this.setup(); // ⬅️ 数量变化也需要重新生成
+			shouldReset = true;
 		}
-		if (properties.particlesize) this.data.particleSize = properties.particlesize.value;
-
-		if (properties.particlecolor) {
-			const c = properties.particlecolor.value;
-			this.data.particleColor = (c.r * 255 << 16) + (c.g * 255 << 8) + (c.b * 255);
+		if (properties.particleSize) {
+			this.data.particleSize = properties.particleSize.value;
+			shouldReset = true;
 		}
-
-		if (properties.textsize) {
-			this.data.textSize = properties.textsize.value;
-			this.setup(); // ⬅️ 文字大小变化通常也要刷新文字形状
+		if (properties.particleColor) {
+			const str = properties.particleColor.value.trim(); // "0.2 0.5 0.7"
+			const rgb = str.split(' ').map(Number); // [0.2, 0.5, 0.7]
+			if (rgb.length === 3) {
+				const [r, g, b] = rgb.map(v => Math.max(0, Math.min(1, v))); // 限制在 0~1 范围内
+				this.data.particleColor = (Math.floor(r * 255) << 16) + (Math.floor(g * 255) << 8) + Math.floor(b * 255);
+				shouldReset = true;
+			}
 		}
-
+		if (properties.textSize) {
+			this.data.textSize = properties.textSize.value;
+			shouldReset = true;
+		}
 		if (properties.area) this.data.area = properties.area.value;
 		if (properties.ease) this.data.ease = properties.ease.value;
+
+		if (shouldReset) {
+			this.setup(); // 变化时，重新生成粒子系统
+		}
 	}
 
 
-
 	setup() {
+		// 删除旧的粒子对象和相关资源，避免内存泄漏
+		if (this.particles) {
+			this.scene.remove(this.particles);
+			this.particles.geometry.dispose();
+			this.particles.material.dispose();
+			this.particles = null;
+		}
+		if (this.planeArea) {
+			this.scene.remove(this.planeArea);
+			this.planeArea.geometry.dispose();
+			this.planeArea.material.dispose();
+			this.planeArea = null;
+		}
 
+		// 创建 planeArea（用于鼠标交互检测）
 		const geometry = new THREE.PlaneGeometry(this.visibleWidthAtZDepth(100, this.camera), this.visibleHeightAtZDepth(100, this.camera));
 		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true });
 		this.planeArea = new THREE.Mesh(geometry, material);
 		this.planeArea.visible = false;
-		this.createText();
+		this.scene.add(this.planeArea);
 
+		this.createText();
 	}
 
 	bindEvents() {
@@ -321,34 +340,28 @@ class CreateParticles {
 		}
 	}
 
-	createText() {
 
+	createText() {
 		let thePoints = [];
 
 		let shapes = this.font.generateShapes(this.data.text, this.data.textSize);
 		let geometry = new THREE.ShapeGeometry(shapes);
 		geometry.computeBoundingBox();
 
-		const xMid = - 0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+		const xMid = -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
 		const yMid = (geometry.boundingBox.max.y - geometry.boundingBox.min.y) / 2.85;
 
 		geometry.center();
 
 		let holeShapes = [];
-
 		for (let q = 0; q < shapes.length; q++) {
-
 			let shape = shapes[q];
-
 			if (shape.holes && shape.holes.length > 0) {
-
 				for (let j = 0; j < shape.holes.length; j++) {
-
 					let hole = shape.holes[j];
 					holeShapes.push(hole);
 				}
 			}
-
 		}
 		shapes.push.apply(shapes, holeShapes);
 
@@ -356,20 +369,14 @@ class CreateParticles {
 		let sizes = [];
 
 		for (let x = 0; x < shapes.length; x++) {
-
 			let shape = shapes[x];
-
 			const amountPoints = (shape.type == 'Path') ? this.data.amount / 2 : this.data.amount;
-
 			let points = shape.getSpacedPoints(amountPoints);
-
 			points.forEach((element, z) => {
-
 				const a = new THREE.Vector3(element.x, element.y, 0);
 				thePoints.push(a);
 				colors.push(this.colorChange.r, this.colorChange.g, this.colorChange.b);
-				sizes.push(1)
-
+				sizes.push(1);
 			});
 		}
 
@@ -380,14 +387,12 @@ class CreateParticles {
 		geoParticles.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
 
 		const material = new THREE.ShaderMaterial({
-
 			uniforms: {
-				color: { value: new THREE.Color(0xffffff) },
+				color: { value: new THREE.Color(this.data.particleColor) },
 				pointTexture: { value: this.particleImg }
 			},
 			vertexShader: document.getElementById('vertexshader').textContent,
 			fragmentShader: document.getElementById('fragmentshader').textContent,
-
 			blending: THREE.AdditiveBlending,
 			depthTest: false,
 			transparent: true,
@@ -398,7 +403,6 @@ class CreateParticles {
 
 		this.geometryCopy = new THREE.BufferGeometry();
 		this.geometryCopy.copy(this.particles.geometry);
-
 	}
 
 	visibleHeightAtZDepth(depth, camera) {

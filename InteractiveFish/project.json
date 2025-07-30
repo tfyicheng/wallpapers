@@ -1,0 +1,124 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "InteractiveFish-池中鱼，点击投饲料，可自定义参数~（来源https://www.abowman.com/gadgets/fish/,目前没找到类似的壁纸只好自己搬运上去，若侵权请联系下架）",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"backgroundcolor" : 
+			{
+				"index" : 0,
+				"order" : 100,
+				"text" : "backgroundcolor池颜色",
+				"type" : "color",
+				"value" : "0.94 0.97 1.0"
+			},
+			"fishcolor1" : 
+			{
+				"index" : 2,
+				"order" : 102,
+				"text" : "fishcolor1鱼颜色1",
+				"type" : "color",
+				"value" : "0.96 0.38 0.31"
+			},
+			"fishcolor10" : 
+			{
+				"index" : 11,
+				"order" : 111,
+				"text" : "fishcolor10鱼颜色10",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"fishcolor2" : 
+			{
+				"index" : 3,
+				"order" : 103,
+				"text" : "fishcolor2鱼颜色2",
+				"type" : "color",
+				"value" : "0.86 0.73 0.31"
+			},
+			"fishcolor3" : 
+			{
+				"index" : 4,
+				"order" : 104,
+				"text" : "fishcolor3鱼颜色3",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"fishcolor4" : 
+			{
+				"index" : 5,
+				"order" : 105,
+				"text" : "fishcolor4鱼颜色4",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"fishcolor5" : 
+			{
+				"index" : 6,
+				"order" : 106,
+				"text" : "fishcolor5鱼颜色5",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"fishcolor6" : 
+			{
+				"index" : 7,
+				"order" : 107,
+				"text" : "fishcolor6鱼颜色6",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"fishcolor7" : 
+			{
+				"index" : 8,
+				"order" : 108,
+				"text" : "fishcolor7鱼颜色7",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"fishcolor8" : 
+			{
+				"index" : 9,
+				"order" : 109,
+				"text" : "fishcolor8鱼颜色8",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"fishcolor9" : 
+			{
+				"index" : 10,
+				"order" : 110,
+				"text" : "fishcolor9鱼颜色9",
+				"type" : "color",
+				"value" : "0.38 0.96 0.31"
+			},
+			"numfish" : 
+			{
+				"index" : 1,
+				"order" : 101,
+				"text" : "numfish鱼数量",
+				"type" : "textinput",
+				"value" : 10
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			}
+		}
+	},
+	"preview" : "preview.png",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "interactive" ],
+	"title" : "InteractiveFish-池中鱼",
+	"type" : "web",
+	"version" : 2,
+	"visibility" : "public",
+	"workshopid" : "3537848495",
+	"workshopurl" : "steam://url/CommunityFilePage/3537848495"
+}

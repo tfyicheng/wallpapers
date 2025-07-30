@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <script src="./ruffle/ruffle.js"></script>
+    <script src="./js/swfobject.js" type="text/javascript"></script>
+    <script src="./js/embedswf.js" type="text/javascript"></script>
+
+    <style type="text/css">
+      <!--
+      body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      }
+      -->
+    </style>
+  </head>
+  <body>
+    <div id="gadgetSWF"></div>
+
+    <script type="text/javascript">
+      // <![CDATA[
+
+      var swfURL = "fish20210203.swf";
+      var bgcolor = "F0F7FF";
+      var flashVars = "";
+
+      function loadSWF() {
+        embedSWF(swfURL, "gadgetSWF", {
+          h: "100%",
+          w: "100%",
+          bgcolor: bgcolor,
+          flashVars: flashVars,
+          scale: "noscale",
+          salign: "tl",
+        });
+      }
+
+      // 全局保存所有属性的最新值
+      var wallpaperParams = {
+        up_backgroundColor: "f7f7f7",
+        up_numFish: 5,
+      };
+      for (let i = 1; i <= 10; i++) {
+        wallpaperParams["up_fishColor" + i] = "f45540"; // 初始默认颜色
+      }
+
+      function buildFlashVars() {
+        return Object.entries(wallpaperParams)
+          .map(([key, value]) => `${key}=${value}`)
+          .join("&");
+      }
+
+      function coverColor(color) {
+        // 情况 1：字符串，如 "0 0 0" (0~1)
+        if (typeof color === "string") {
+          const parts = color.split(" ").map(Number);
+          // 转成 0-255
+          const rgb = parts.map((v) => Math.round(v * 255));
+          const hex = rgb.map((v) => v.toString(16).padStart(2, "0")).join("");
+          return hex;
+        }
+        // 情况 2：数组
+        else if (Array.isArray(color)) {
+          // 判断是 0-1 范围还是 0-255 范围
+          const factor = color.some((v) => v > 1) ? 1 : 255;
+          const rgb = color.map((v) => Math.round(v * factor));
+          const hex = rgb.map((v) => v.toString(16).padStart(2, "0")).join("");
+          return hex;
+        }
+      }
+
+      window.wallpaperPropertyListener = {
+        applyUserProperties: function (properties) {
+          /* console.log("applyUserProperties", properties); */
+
+          // 更新全局参数字典
+          if (properties.backgroundcolor) {
+            wallpaperParams.up_backgroundColor = coverColor(
+              properties.backgroundcolor.value
+            );
+          }
+          if (properties.numfish) {
+            wallpaperParams.up_numFish = properties.numfish.value;
+          }
+          for (let i = 1; i <= 10; i++) {
+            let key = "fishcolor" + i;
+            if (properties[key]) {
+              wallpaperParams[`up_fishColor${i}`] = coverColor(
+                properties[key].value
+              );
+            }
+          }
+
+          // 每次都构建完整的参数字符串
+          flashVars = buildFlashVars();
+          /* console.log("flashVars", flashVars); */
+          loadSWF();
+        },
+      };
+      loadSWF(); // 初次加载
+
+      // ]]&gt;
+    </script>
+  </body>
+</html>

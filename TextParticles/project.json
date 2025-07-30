@@ -1,56 +1,99 @@
 {
-  "file": "index.html",
-  "title": "TextParticles-文本粒子交互效果",
-  "description": "TextParticles.文本粒子交互效果",
-  "preview": "preview.jpg",
-  "type": "web",
-  "general": {
-    "properties": {
-      "text": {
-        "type": "string",
-        "default": "Hi !\nText Only English",
-        "description": "Display Text"
-      },
-      "amount": {
-        "type": "number",
-        "default": 1500,
-        "description": "Particle Amount",
-        "min": 100,
-        "max": 10000
-      },
-      "particleSize": {
-        "type": "number",
-        "default": 1,
-        "description": "Particle Size",
-        "min": 0.1,
-        "max": 10
-      },
-      "particleColor": {
-        "type": "color",
-        "default": "#ffffff",
-        "description": "Particle Color"
-      },
-      "textSize": {
-        "type": "number",
-        "default": 16,
-        "description": "Text Size",
-        "min": 1,
-        "max": 100
-      },
-      "area": {
-        "type": "number",
-        "default": 250,
-        "description": "Area"
-      },
-      "ease": {
-        "type": "number",
-        "default": 0.05,
-        "description": "Ease",
-        "min": 0,
-        "max": 1
-      }
-    }
-  },
-  "tags": ["interactive", "particles", "customizable"]
+	"contentrating" : "Everyone",
+	"description" : "TextParticles.文本粒子交互效果，自定义效果，因为加载本地字体json，所以目前仅支持字母跟部分标点符号，\\n换行",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"amount" : 
+			{
+				"index" : 1,
+				"max" : 10000,
+				"min" : 100,
+				"order" : 101,
+				"step" : 50,
+				"text" : "Particle Amount",
+				"type" : "slider",
+				"value" : 1500
+			},
+			"area" : 
+			{
+				"index" : 5,
+				"max" : 1000,
+				"min" : 0,
+				"order" : 105,
+				"step" : 10,
+				"text" : "Area",
+				"type" : "slider",
+				"value" : 250
+			},
+			"ease" : 
+			{
+				"index" : 6,
+				"max" : 1,
+				"min" : 0,
+				"order" : 106,
+				"step" : 0.01,
+				"text" : "Ease",
+				"type" : "slider",
+				"value" : 0.05
+			},
+			"particleColor" : 
+			{
+				"index" : 3,
+				"order" : 103,
+				"text" : "Particle Color",
+				"type" : "color",
+				"value" : "1 1 1"
+			},
+			"particleSize" : 
+			{
+				"index" : 2,
+				"max" : 10,
+				"min" : 0.1,
+				"order" : 102,
+				"step" : 0.1,
+				"text" : "Particle Size",
+				"type" : "slider",
+				"value" : 1
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			},
+			"text" : 
+			{
+				"index" : 0,
+				"order" : 100,
+				"text" : "Display Text",
+				"type" : "textinput",
+				"value" : "Hi !\\nText Only English"
+			},
+			"textSize" : 
+			{
+				"index" : 4,
+				"max" : 100,
+				"min" : 1,
+				"order" : 104,
+				"step" : 1,
+				"text" : "Text Size",
+				"type" : "slider",
+				"value" : 16
+			}
+		}
+	},
+	"preview" : "preview.jpg",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "interactive" ],
+	"title" : "TextParticles-文本粒子交互效果",
+	"type" : "web",
+	"version" : 2,
+	"visibility" : "public",
+	"workshopid" : "3534164255",
+	"workshopurl" : "steam://url/CommunityFilePage/3534164255"
 }
-
